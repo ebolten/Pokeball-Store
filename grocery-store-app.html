@@ -1,0 +1,222 @@
+<html>
+    <head>
+        <!-- https://www.serebii.net/blackwhite/items.shtml -->
+        <title>Pokemon Center Store</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <style>
+        body {
+          background-color: #F0C880;
+          margin: 50;
+        }
+        ::selection {
+          background: #D83000; /* WebKit/Blink Browsers */
+          color: white;
+        }
+        ::-moz-selection {
+          background: #D83000; /* Gecko Browsers */
+          color: white;
+        }
+        #header {
+          text-align: center;
+        }
+        #card {
+          padding: 15px;
+          color: white;
+          background-color: #3890A8;
+          border: solid 10px #D83000;
+        }
+        #cart-num {
+          font-size: 25px;
+        }
+        #btn-cart {
+          background-color: #D83000;
+          border: 1px solid black;
+          border-radius: 5px;
+          font-weight: 800;
+          color: black;
+          padding: 10px;
+          margin-top: 10px;
+          margin-bottom: 20px;
+          width: 100%;
+        }
+        #btn-cart:hover {
+          color: white;
+          background-color: #902000;
+        }
+        #item-label {
+          text-align: center;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0 4px;
+          }
+          
+          /* Create four equal columns that sits next to each other */
+          .column {
+            flex: 20%;
+            max-width: 20%;
+            padding: 0 4px;
+          }
+          
+          .column img {
+            margin-top: 8px;
+            vertical-align: middle;
+            width: 100%;
+          }
+          
+          /* Responsive layout - makes a two column-layout instead of four columns */
+          @media screen and (max-width: 800px) {
+            .column {
+              flex: 50%;
+              max-width: 50%;
+            }
+          }
+          
+          /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+          @media screen and (max-width: 600px) {
+            .column {
+              flex: 100%;
+              max-width: 100%;
+            }
+          }
+
+          /* The Modal (background) */
+          .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 20%;
+            top: 0;
+            width: 60%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+          }
+
+          /* Modal Content/Box */
+          .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+          }
+
+          /* The Close Button */
+          .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+          }
+
+          .close:hover,
+          .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+          }
+    </style>
+    <script>
+        const inStock = {'Poke Ball':1, 'Great Ball':1, 'Premier Ball':1, 'Dive Ball':1,
+        'Master Ball':1, 'Heal Ball':1, 'Net Ball':1, 'Quick Ball':1, 'Safari Ball':1,
+        'Timer Ball':1, 'Ultra Ball':1, 'Luxury Ball':1, 'Dusk Ball':1,};
+        let cart = [];
+        document.addEventListener('DOMContentLoaded',function(){
+            let row = document.getElementById("store");
+            for (const item in inStock) {
+
+              // card to hold pokeballs and information
+              let card = document.createElement("div");
+              card.className = "column";
+              card.id = "card";
+
+              // image to be added to card
+              let newImg = document.createElement("img");
+              let pokeballSrc = item.toLowerCase().replace(' ', '-');
+              newImg.src = `pokeballs/${pokeballSrc}.png`;
+              newImg.alt = item;
+
+              // item title label
+              let itemLabel = document.createElement("h2");
+              itemLabel.innerText = item;
+              itemLabel.id = "item-label";
+
+              // button to add item to cart
+              let addCartBtn = document.createElement("button");
+              addCartBtn.id = "btn-cart";
+              addCartBtn.innerText = "Add to Cart";
+              addCartBtn.onclick = function(){
+                alert(`A ${item} has been added to your cart!`);
+                cart.push(item);
+                let cartNum = document.getElementById("cart-num");
+                cartNum.innerText = `(${cart.length})`;
+
+                let cartContent = document.getElementById("cart-modal-text");
+                cartContent.innerHTML = `There are ${cart.length} item(s) in your cart!<br/>You have`;
+                for (var i = 0; i < cart.length; i++) {
+                  if (i !== 0) {
+                    cartContent.innerHTML += `,`;
+                  }
+                  if (i === cart.length-1 && i !== 0) {
+                    cartContent.innerHTML += " and";
+                  }
+                  cartContent.innerHTML += ` a ${cart[i]}`;
+                  if (i === cart.length-1) {
+                    cartContent.innerHTML += ".";
+                  }
+                }
+              }
+              card.appendChild(newImg);
+              card.appendChild(itemLabel);
+              card.appendChild(addCartBtn);
+              row.appendChild(card);
+            }
+
+            var modal = document.getElementById("cart-modal");
+            var cartBtn = document.getElementById("cart-btn");
+            var closeSpan = document.getElementsByClassName("close")[0];
+
+            // when the user clicks on the cart, open the modal
+            cartBtn.onclick = function() {
+              modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+              closeSpan.onclick = function() {
+              modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
+        })
+    </script>
+    <body>
+        <div style="float: right; font-size: 35px;">
+          <span id="cart-btn"><i class="fa fa-shopping-cart"></i><span id="cart-num">(0)</span></span>
+        </div>
+        <div id="header">
+            <h1>Welcome to the Pokemon Center</h1>
+        </div>
+        <div id="store" class="row">
+        </div>
+
+        <!-- cart modal -->
+        <div id="cart-modal" class="modal">
+
+          <!-- content in cart modal -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="cart-modal-text">There are no items in your cart!</p>
+          </div>
+
+        </div>
+
+    </body>
+</html>
