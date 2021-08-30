@@ -102,12 +102,14 @@
             padding: 20px;
             border: 1px solid #888;
             width: 80%; /* Could be more or less, depending on screen size */
+            font-size: 20px;
+            text-align: center;
           }
 
           /* The Close Button */
           .close {
-            color: #aaa;
-            float: right;
+            color: #333;
+            float: left;
             font-size: 28px;
             font-weight: bold;
           }
@@ -155,7 +157,7 @@
                 cartNum.innerText = `(${cart.length})`;
 
                 let cartContent = document.getElementById("cart-modal-text");
-                cartContent.innerHTML = `There are ${cart.length} item(s) in your cart!<br/>You have`;
+                cartContent.innerHTML = `There are ${cart.length} item(s) in your cart!<br/><br/>You have`;
                 for (var i = 0; i < cart.length; i++) {
                   if (i !== 0) {
                     cartContent.innerHTML += `,`;
